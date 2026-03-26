@@ -1,0 +1,5 @@
+-r requirements-tts.txt
+fastapi
+uvicorn[standard]
+httpx
+a2wsgi

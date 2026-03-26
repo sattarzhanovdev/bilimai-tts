@@ -1,0 +1,4 @@
+espnet
+parallel-wavegan
+scipy
+torchaudio
