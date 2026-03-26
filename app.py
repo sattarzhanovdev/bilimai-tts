@@ -18,6 +18,7 @@ from pydantic import BaseModel, Field
 BASE_DIR = Path(__file__).resolve().parent
 
 
+
 def _resolve_path(p: str) -> str:
     path = Path(p).expanduser()
     if path.is_absolute():
@@ -168,6 +169,9 @@ app.mount("/audio", StaticFiles(directory=str(audio_dir)), name="audio")
 
 tts = TurkicTTSService()
 
+@app.get("/")
+def root() -> dict:
+    return {"status": "ok", "service": "BilimAI-TTS API"}
 
 @app.get("/health")
 def health() -> dict:
