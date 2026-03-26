@@ -1,0 +1,20 @@
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyd
+
+# Virtualenv
+venv/
+.venv/
+
+# Generated audio
+audio/
+*.wav
+
+# Model artifacts (keep README instructions to download separately)
+*.zip
+exp/**/*.pth
+parallelwavegan_male2_checkpoint/*.pkl
+
