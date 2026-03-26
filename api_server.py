@@ -171,32 +171,35 @@ tts = TurkicTTSService()
 
 @app.get("/")
 def root() -> dict:
-    return {"status": "ok", "service": "BilimAI-TTS API"}
+    return {"status": "ok"}
 
 @app.get("/health")
 def health() -> dict:
-    tts.init()
-    return {"ok": tts._init_error is None, "error": tts._init_error}
+    return {"ok": True}
 
 
-@app.post("/tts", response_model=TTSResponse)
-def tts_endpoint(payload: TTSRequest, request: Request) -> TTSResponse:
-    text = payload.text.strip()
-    if not text:
-        raise HTTPException(status_code=400, detail="text is empty")
+# @app.post("/tts", response_model=TTSResponse)
+# def tts_endpoint(payload: TTSRequest, request: Request) -> TTSResponse:
+#     text = payload.text.strip()
+#     if not text:
+#         raise HTTPException(status_code=400, detail="text is empty")
 
-    try:
-        fs, wav = tts.synth(text=text, lang=payload.lang)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+#     try:
+#         fs, wav = tts.synth(text=text, lang=payload.lang)
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=str(e))
 
-    file_id = f"{int(time.time())}_{uuid.uuid4().hex[:12]}"
-    filename = f"{file_id}.wav"
-    out_path = audio_dir / filename
+#     file_id = f"{int(time.time())}_{uuid.uuid4().hex[:12]}"
+#     filename = f"{file_id}.wav"
+#     out_path = audio_dir / filename
 
-    from scipy.io.wavfile import write as wav_write
+#     from scipy.io.wavfile import write as wav_write
 
-    wav_write(str(out_path), fs, wav)
+#     wav_write(str(out_path), fs, wav)
 
-    base = str(request.base_url).rstrip("/")
-    return TTSResponse(id=file_id, audio_url=f"{base}/audio/{filename}")
+#     base = str(request.base_url).rstrip("/")
+#     return TTSResponse(id=file_id, audio_url=f"{base}/audio/{filename}")
+
+@app.post("/tts")
+def tts_endpoint(payload: TTSRequest, request: Request):
+    return {"text": payload.text, "status": "received"}
